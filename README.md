@@ -1,4 +1,4 @@
-# Prato Cheio — [nome do grupo]
+# Prato Cheio — [Senninha Boys]
 
 Projeto da disciplina **Análise, Projeto e Desenvolvimento Ágil**.
 Conecta doadores de alimentos excedentes a ONGs, antes que a comida se perca.
@@ -7,9 +7,11 @@ Conecta doadores de alimentos excedentes a ONGs, antes que a comida se perca.
 > walking skeleton (U1) → incremento guiado pelo projeto (U2) → produto refatorado (U3).
 
 ## Integrantes
-- Nome — @usuario-github
-- Nome — @usuario-github
-- Nome — @usuario-github
+- Eduardo de Oliveira — @oduduz1
+- Nicolas Eduardo — @nicolasdebian
+- Rubem Krüger — @rubinho01
+- Silvio de Avila — @avilasj
+- Thomas Pruner — @ThomasPruner
 
 ## Como rodar
 
