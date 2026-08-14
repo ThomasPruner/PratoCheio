@@ -86,6 +86,38 @@ A solução será um formulário curto e adaptado ao celular, com apenas três i
 
 ## Histórias de usuário
 | # | História (Como… quero… para…) | INVEST: o que falha |
+| 
+O que a IA gerou: 
+#1 — Aprovação de doações
+
+O que ela gerou: uma user story em que Marta precisa aprovar manualmente cada doação antes de ela ficar visível para as ONGs.
+
+O que mudamos — e por quê: tiramos a aprovação prévia obrigatória. O caso já diz que alimento perecível tem janela curta de retirada, e a "história zero" do enunciado é direta — doador publica, ONG vê, ONG aceita — sem passo de aprovação no meio. Colocar Marta como gargalo manual entre a publicação e a visibilidade da doação aumenta exatamente o tempo que o projeto quer reduzir (tempo entre "comida disponível" e "comida coletada"). Trocamos por uma abordagem de confiança-com-auditoria: a doação é publicada direto, e Marta (ou a vigilância sanitária) pode sinalizar/remover doações problemáticas depois, sem travar o fluxo principal.
+
+Regra de negócio inventada: que toda doação passa por aprovação humana antes de ficar disponível. Essa regra não está em nenhum lugar do caso — foi a IA quem decidiu que Marta precisa ser um gate de qualidade manual. Quem decide sobre isso é a própria Marta em conjunto com a vigilância sanitária, pesando velocidade (perecibilidade) contra rastreabilidade/segurança alimentar — é exatamente um dos "conflitos de prioridade" que o enunciado já apontava e que a IA resolveu sozinha, na direção errada, sem que o grupo tivesse decidido.
+
+Restrição que sumiu: a janela curta de validade dos perecíveis. Um fluxo de aprovação manual é incompatível com "se não for aceito e coletado a tempo, perde-se" — é o erro mais caro dessa história, porque vai contra o próprio objetivo de impacto do projeto.
+
+#2 — Notificação de doações próximas
+
+O que ela gerou: uma story de notificação em tempo real (push) para a ONG quando surge uma doação próxima.
+
+O que mudamos — e por quê: trocamos "notificação em tempo real" por uma lista/feed que a ONG consulta (pull, não push). Notificação push em tempo real pressupõe infraestrutura de backend, serviço de push e conexão estável — nada disso combina com "equipe pequena, orçamento próximo de zero" e "precisa funcionar no navegador do celular dos voluntários, conexão instável". Além disso, o piloto roda num bairro só: "próximas" perde quase todo o sentido quando todo mundo já está no mesmo bairro por definição.
+
+Regra de negócio inventada: que existe um critério automático de proximidade geográfica disparando notificações — a IA assumiu geolocalização e um algoritmo de "quem está mais perto recebe primeiro" como se fosse um recurso simples, quando isso é decisão de produto/técnica não trivial. O caso menciona a vantagem logística da ONG mais próxima como regra conhecida, mas não diz que isso vira notificação automática em tempo real — isso quem decide é o grupo, junto com Marta, ponderando esforço de implementação vs. benefício no piloto.
+
+Restrição que sumiu: a conexão instável do celular na rua e o orçamento zero. Uma solução real-time/push é cara e frágil justamente no ambiente onde ela seria usada (voluntário na rua, sinal ruim).
+
+#3 — Dashboard de impacto
+
+O que ela gerou: uma story de dashboard para Marta acompanhar alimentos doados, refeições geradas e doações desperdiçadas, para mostrar resultado a apoiadores.
+
+O que mudamos — e por quê: cortamos essa história do escopo do piloto (ou reduzimos a um contador simples, sem "refeições geradas"). O prazo é de poucas semanas, com um bairro só, equipe pequena e orçamento quase zero — construir um dashboard de métricas é esforço de análise de dados que não ajuda a validar a fatia executável (a "história zero"). Também não há volume real de doações ainda, então o dashboard mostraria pouquíssimo dado no início.
+
+Regra de negócio inventada: a conversão de "quantidade de alimento" em "refeições geradas". Não existe no caso nenhuma fórmula ou critério de quantos kg/itens equivalem a uma refeição — a IA inventou essa métrica como se fosse óbvia. Quem decide sobre esse critério (se e quando ele existir) é Marta, possivelmente com apoio de alguém de nutrição ou da própria vigilância sanitária, não é uma decisão técnica trivial do time de desenvolvimento.
+
+Restrição que sumiu: o prazo curto e o orçamento zero — e também o dado que falta: "Marta acha que o gargalo é o tempo de coleta, mas não há medição que confirme." Construir um dashboard de impacto antes de sequer confirmar essa hipótese é investir esforço num problema que ainda não foi validado.
+
 |---|---|---|
 
 ## Critérios de aceite
