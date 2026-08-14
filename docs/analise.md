@@ -87,6 +87,22 @@ A solução será um formulário curto e adaptado ao celular, com apenas três i
 ## Histórias de usuário
 | # | História (Como… quero… para…) | INVEST: o que falha |
 | 
+---
+
+### História Zero (★ H0)
+
+* **Por que ela:** Permite cadastrar e aceitar doações imediatamente, garantindo que o alimento não estrague e que uma doação aceita não seja pego por outra ONG.
+* **O que ficou FORA da fatia:**
+  1. Login e cadastro de usuários.
+  2. Filtros de busca.
+  3. Notificações por e-mail/WhatsApp.
+  4. Mapas e GPS.
+  5. Upload de fotos.
+* **Por quê:**
+  * *Exclusões 1, 3 e 4 (Risco):* Evita falhas em conexões 3G/4G fracas na rua e elimina dependência de serviços pagos/externos.
+  * *Exclusões 2 e 5 (Medição):* Permite medir se o fluxo básico de texto é suficiente antes de investir tempo em telas complexas.
+
+---
 O que a IA gerou: 
 #1 — Aprovação de doações
 
