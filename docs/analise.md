@@ -86,8 +86,15 @@ A solução será um formulário curto e adaptado ao celular, com apenas três i
 
 ## Histórias de usuário
 | # | História (Como… quero… para…) | INVEST: o que falha |
-| 
----
+|---|---|---|
+| ★ H0 | Como **Doador**, quero cadastrar doação de alimento com validade, e como **ONG**, quero aceitar, para evitar o descarte de comida boa. | Falha em Pequena → Fluxo completo. | Reduzido o escopo para cadastro e aceite simples sem login nem fotos. |
+|H1|Como doador , quero cadastrar uma sobra de comida informando apenas o tipo, quantidade e validade em menos de 1 minuto, para que eu possa doar rapidamente sem atrapalhar a operação do meu negócio.|Valiosa|
+|H2|Como representante de uma ONG receptora, quero visualizar uma lista de doações disponíveis filtradas por proximidade e aceitar a doação com um clique, para garantir que ela seja reservada para nossa cozinha e possamos planejar o cardápio.|Independente|
+|H3|Como fiscal da vigilância sanitária, quero acessar o histórico completo com rastreabilidade detalhada de cada lote de alimento doado (incluindo origem, temperatura de armazenamento e laudo de validade), para garantir o cumprimento das normas sanitárias.|Pequena|
+|H4|Como coordenadora da plataforma, quero acessar um painel analítico com métricas consolidadas de toneladas de alimentos salvos e o tempo médio de coleta por bairro, para apresentar relatórios de impacto a potenciais apoiadores e patrocinadores.|Independente / Pequena|
+|H5|Como voluntário entregador, quero acessar a plataforma pelo navegador do celular com suporte a modo offline/conexão instável e acionar o GPS integrado para traçar a rota entre o doador e a ONG, para realizar a coleta de forma ágil na rua.|Pequena|
+|H6|Como doador, quero cancelar ou atualizar a quantidade de uma doação já publicada antes que ela seja aceita por uma ONG, para corrigir imprevistos na minha cozinha sem gerar viagem perdida para os voluntários.|Valiosa|
+|H7|Como doador, quero selecionar o tipo de alimento por categorias pré-definidas (ex: perecível, industrializado, hortifrúti) e informar obrigatoriamente a validade em horas, para cumprir a exigência mínima de rastreabilidade sanitária sem perder tempo escrevendo descrições longas.|Negociável|
 
 ### História Zero (★ H0)
 
