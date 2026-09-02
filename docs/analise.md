@@ -144,7 +144,18 @@ Restrição que sumiu: o prazo curto e o orçamento zero — e também o dado qu
 |---|---|---|
 
 ## Critérios de aceite
-**História X** — Dado … Quando … Então …
+**História H0**
+Dado que existe uma doação publicada, dentro da validade e ainda não aceita por nenhuma ONG, quando uma ONG aceitar essa doação, então ela deve ficar reservada para essa ONG e deixar de estar disponível para outras ONGs.
+Dado que o doador possui uma doação de alimento ainda não publicada, quando informar os dados obrigatórios, incluindo a validade, e confirmar o cadastro, então a doação deve ser registrada como disponível enquanto estiver dentro do prazo de validade.
+
+**História H1**
+Dado que o doador está cadastrado e apto a publicar uma doação, quando informar o tipo do alimento, a quantidade e a validade e confirmar o cadastro, então a doação deve ser publicada sem exigir outras informações obrigatórias.
+Dado que o doador possui todas as informações necessárias para a doação, quando iniciar o cadastro e preencher os dados solicitados, então deve ser possível concluir a publicação em menos de 1 minuto em condições normais de uso.
+
+**História H7**
+Dado que o doador está cadastrando uma nova doação, quando tentar publicá-la sem selecionar uma categoria de alimento, então a publicação não deve ser concluída até que uma categoria válida seja selecionada.
+Dado que o doador está cadastrando uma nova doação, quando tentar publicá-la sem informar a validade em horas, então a publicação não deve ser concluída e a validade deve ser indicada como obrigatória.
+Dado que o doador informou a categoria, a quantidade e a validade, quando confirmar o cadastro, então a doação deve ser publicada sem exigir o preenchimento de uma descrição textual longa.
 
 ## Riscos
 | Risco | Probabilidade | Impacto | Mitigação |
