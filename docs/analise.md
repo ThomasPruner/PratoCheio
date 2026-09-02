@@ -160,6 +160,9 @@ Dado que o doador informou a categoria, a quantidade e a validade, quando confir
 ## Riscos
 | Risco | Probabilidade | Impacto | Mitigação |
 |---|---|---|---|
+|Doação perecível expira antes de ser aceita/coletada, pois a notificação automática de proximidade foi cortada do escopo, aumentando o desperdício — contra o objetivo de impacto #2.|Média|Alto|Até 05/10, Rubem implementa um job que marca automaticamente doações expiradas (regra de negócio 2) e registra quantas expiraram sem coleta na 1ª semana do piloto, para validar se o problema é real.|
+|Duas ONGs tentam aceitar a mesma doação ao mesmo tempo (concorrência), violando a regra de reserva exclusiva do H0.|Baixa|Alto|Até 05/10, Silvio implementa transação atômica no aceite da doação e escreve um teste automatizado que simula dois aceites simultâneos para confirmar que só um vence.|
+
 
 ## Hipótese e experimento
 
