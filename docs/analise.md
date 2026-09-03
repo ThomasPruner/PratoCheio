@@ -166,6 +166,25 @@ Dado que o doador informou a categoria, a quantidade e a validade, quando confir
 
 ## Hipótese e experimento
 
+Acreditamos que o maior gargalo para a perda de alimentos doados é o tempo excessivo que leva entre a publicação da doação pelo doador e a aceitação por uma ONG.
+
+Saberemos que estávamos errados se a taxa de aceitação de doações por ONGs em até 2 horas for superior a 80% e, mesmo assim, mais de 15% dos alimentos perecíveis forem descartados por falta de coleta a tempo, até a data de 05/10. (Isso indicaria que o gargalo real não é a velocidade de comunicação/aceite, mas sim a capacidade de logística e transporte dos voluntários/ONGs).
+
+Como medimos:
+
+Através do registro do horário de publicação e horário do clique de "aceitar" da ONG.
+
+Através de uma planilha manual preenchida por 2 doadores parceiros do piloto, registrando o volume em kg de comida descartada ao final de cada dia no período do teste.
+
+Desenho do Experimento (Sem Necessidade de Software Pronto)
+Descrição do Teste: Antes mesmo de subir o sistema completo com backend/push, faremos um teste manual por 1 semana em um único bairro. Criaremos um grupo direto no WhatsApp/Telegram com 2 doadores (ex: um restaurante e uma padaria local) e 3 ONGs locais.
+
+Execução: O doador envia uma mensagem curta no grupo com tipo de comida, quantidade e validade em horas (exatos dados da H1/H7). A primeira ONG que responder "Aceito" garante a reserva.
+
+Custo/Recursos: R$ 0,00 e 0 horas de desenvolvimento de código complexo.
+
+O que ele valida: Valida a suposição da Marta sobre onde está o gargalo e mede a adesão dos doadores ao formulário mínimo de 3 campos antes de gastar recursos construindo dashboards ou alertas complexos.
+
 ## Decisão de análise
 - **Problema:**
 - **Alternativas:**
