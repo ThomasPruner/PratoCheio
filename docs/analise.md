@@ -186,10 +186,34 @@ Custo/Recursos: R$ 0,00 e 0 horas de desenvolvimento de código complexo.
 O que ele valida: Valida a suposição da Marta sobre onde está o gargalo e mede a adesão dos doadores ao formulário mínimo de 3 campos antes de gastar recursos construindo dashboards ou alertas complexos.
 
 ## Decisão de análise
-- **Problema:**
-- **Alternativas:**
-- **Decisão e justificativa:**
-- **Riscos e limitações:**
+
+Problema:
+
+Definir qual é o escopo mínimo viável (História Zero — H0) para a primeira iteração do piloto, garantindo que o fluxo principal de doação e coleta aconteça na primeira semana sem travar o projeto por complexidade técnica ou falta de infraestrutura.
+
+Alternativas:
+
+Alternativa A (Fluxo Completo e Automatizado): Incluir no piloto o cadastro de usuários com autenticação, filtros avançados de busca por geolocalização (raio de 5 km), notificações push em tempo real para as ONGs e mapas/GPS integrados para os entregadores voluntários.
+
+O que se ganha: Maior automação, conveniência do usuário e experiência visual completa.
+
+O que se perde: Exige backend robusto, consome mais prazo e orçamento (que é próximo de zero) e falha em ambientes com conexão 3G/4G instável na rua.
+
+Alternativa B (Fatia Mínima Executável — H0 Simplificada): Limitar o piloto ao cadastro básico da doação com 3 campos obrigatórios (tipo, quantidade e validade) e aceitação simples com 1 clique em um feed consultável (pull), deixando de fora login, notificações push, mapas, upload de fotos e aprovação manual.
+
+O que se ganha: Entrega imediata, custo zero de infraestrutura complexa e funcionamento garantido em navegadores de celulares com sinal fraco.
+
+O que se perde: Automação de alertas em tempo real e conveniência de navegação por GPS direto na plataforma.
+
+Decisão e justificativa:
+
+Alternativa B. A decisão apoia-se diretamente no Objetivo de Impacto #1 (reduzir o tempo para que avisos cheguem às ONGs) e nas restrições do projeto (equipe pequena, prazo de poucas semanas e orçamento zero). Adicionar recursos como push e mapas aumentaria o risco de falhas técnicas na rua e atrasaria a entrega da primeira versão funcional (Marta exige um projeto funcional com alta prioridade). A simplificação garante que o alimento perecível seja publicado e reservado antes de estragar.
+
+Riscos e limitações:
+
+Risco de atraso no aceite: Sem notificações push em tempo real, as ONGs precisam consultar a lista manualmente, o que pode fazer com que doações perecíveis com janela curta expirarem antes de serem vistas.
+
+Sobrecarga de navegação externa: Sem GPS integrado na plataforma, os voluntários precisarão copiar o endereço e colar manualmente em aplicativos externos de mapa (ex: Google Maps), aumentando o esforço operacional da coleta na rua.
 
 ## Uso de IA
 O que geramos com IA, o que verificamos e o que alteramos.
