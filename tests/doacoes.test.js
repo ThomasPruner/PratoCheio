@@ -43,6 +43,7 @@ describe('publicar e listar doações', () => {
     expect(res.body).toHaveLength(1);
     expect(res.body[0].tipo).toBe('Sopa');
   });
+  
   it('recusa doação sem os campos obrigatórios', async () => {
     const res = await request(app)
       .post('/api/doacoes')
@@ -57,9 +58,49 @@ describe('publicar e listar doações', () => {
 });
 
 describe('aceitar uma doação', () => {
-  it.todo('marca a doação como aceita pela ONG');
-  it.todo('remove a doação da lista de disponíveis depois de aceita');
-  it.todo('recusa aceitar uma doação que já foi aceita por outra ONG');
+  it('marca a doação como aceita pela ONG', async () => {
+    const criada = await request(app)
+      .post('/api/doacoes')
+      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01' });
+ 
+    const res = await request(app)
+      .post(`/api/doacoes/${criada.body.id}/aceitar`)
+      .send({ ong: 'ONG Esperança' });
+ 
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('aceita');
+    expect(res.body.ong).toBe('ONG Esperança');
+  });
+
+  it('remove a doação da lista de disponíveis depois de aceita', async () => {
+    const criada = await request(app)
+      .post('/api/doacoes')
+      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01' });
+ 
+    await request(app)
+      .post(`/api/doacoes/${criada.body.id}/aceitar`)
+      .send({ ong: 'ONG Esperança' });
+ 
+    const lista = await request(app).get('/api/doacoes');
+    expect(lista.body).toHaveLength(0);
+  });
+ 
+  it('recusa aceitar uma doação que já foi aceita por outra ONG', async () => {
+    const criada = await request(app)
+      .post('/api/doacoes')
+      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01' });
+ 
+    await request(app)
+      .post(`/api/doacoes/${criada.body.id}/aceitar`)
+      .send({ ong: 'ONG Esperança' });
+ 
+    const res = await request(app)
+      .post(`/api/doacoes/${criada.body.id}/aceitar`)
+      .send({ ong: 'Outra ONG' });
+ 
+    expect(res.status).toBe(400);
+    expect(res.body.erro).toBeTruthy();
+  });
 });
 /* Exemplo de como transformar um critério de aceite em teste.
    Descomente o beforeEach/afterAll quando começar a usar o banco.

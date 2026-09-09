@@ -26,11 +26,19 @@ export async function listarDisponiveis() {
 
 // TODO: buscar uma doação pelo id (devolver undefined se não existir).
 export async function buscarPorId(id) {
-  throw new Error('não implementado: repositorio.buscarPorId');
+  const { rows } = await query('SELECT * FROM doacoes WHERE id = ?', [Number(id)]);
+  return rows[0];
 }
 
 // TODO: marcar a doação como aceita pela ONG e devolver a linha atualizada.
 // Pense: como garantir que duas ONGs não aceitem a mesma doação?
 export async function aceitar(id, ong) {
-  throw new Error('não implementado: repositorio.aceitar');
+  const { rows } = await query(
+    `UPDATE doacoes
+        SET status = 'aceita', ong = ?
+      WHERE id = ? AND status = 'disponivel'
+      RETURNING *`,
+    [ong, Number(id)]
+  );
+  return rows[0];
 }
