@@ -4,13 +4,16 @@ import * as repo from './repositorio.js';
 
 // História zero — "um doador publica uma doação".
 // Critério: tipo, quantidade e validade são obrigatórios.
-export async function criarDoacao({ tipo, quantidade, validade }) {
-  throw new Error('não implementado: criarDoacao');
+export async function criarDoacao({ tipo, quantidade, validade } = {}) {
+  if (!tipo || !quantidade || !validade) {
+    throw new Error('tipo, quantidade e validade são obrigatórios');
+  }
+  return repo.inserir({ tipo, quantidade, validade });
 }
 
 // História zero — "uma ONG vê as doações disponíveis".
 export async function listarDisponiveis() {
-  throw new Error('não implementado: listarDisponiveis');
+  return repo.listarDisponiveis();
 }
 
 // História zero — "uma ONG aceita uma doação".

@@ -1,7 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { beforeEach, afterAll, describe, it, expect } from 'vitest';
 import request from 'supertest';
 import { criarApp } from '../src/app.js';
 import { migrar, limparBanco, encerrar } from '../src/db.js';
+
+
+beforeEach(async () => {await migrar(); await limparBanco();});
+
+afterAll(async () => {await encerrar(); });
 
 const app = criarApp();
 
@@ -15,6 +20,7 @@ describe('a aplicação sobe', () => {
   });
 });
 
+
 // ---------------------------------------------------------------------------
 // Backlog de testes do walking skeleton.
 // Cada `it.todo` é um critério de aceite ainda não implementado — o CI não
@@ -26,8 +32,28 @@ describe('a aplicação sobe', () => {
 // ---------------------------------------------------------------------------
 
 describe('publicar e listar doações', () => {
-  it.todo('mostra a doação publicada na lista de disponíveis');
-  it.todo('recusa doação sem os campos obrigatórios');
+    it('mostra a doação publicada na lista de disponíveis', async () => {
+    await request(app)
+      .post('/api/doacoes')
+      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-10-01' });
+ 
+    const res = await request(app).get('/api/doacoes');
+    console.log(res)
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(1);
+    expect(res.body[0].tipo).toBe('Sopa');
+  });
+  it('recusa doação sem os campos obrigatórios', async () => {
+    const res = await request(app)
+      .post('/api/doacoes')
+      .send({ tipo: 'Sopa', quantidade: '10 porções' }); // falta validade
+ 
+    expect(res.status).toBe(400);
+    expect(res.body.erro).toBeTruthy();
+ 
+    const lista = await request(app).get('/api/doacoes');
+    expect(lista.body).toHaveLength(0);
+  });
 });
 
 describe('aceitar uma doação', () => {
@@ -35,12 +61,12 @@ describe('aceitar uma doação', () => {
   it.todo('remove a doação da lista de disponíveis depois de aceita');
   it.todo('recusa aceitar uma doação que já foi aceita por outra ONG');
 });
-
 /* Exemplo de como transformar um critério de aceite em teste.
    Descomente o beforeEach/afterAll quando começar a usar o banco.
 
-  beforeEach(async () => { await migrar(); await limparBanco(); });
-  afterAll(async () => { await encerrar(); });
+beforeEach(async () => {await migrar(); await limparBanco();});
+
+afterAll(async () => {await encerrar(); });
 
   Dado que um doador publicou uma doação
   Quando uma ONG consulta as doações disponíveis
