@@ -4,7 +4,15 @@
 
 ## Problema central
 
+Restaurantes, padarias e mercados descartam diariamente comida boa por falta de um canal rápido para repassá-la, enquanto ONGs e cozinhas comunitárias ficam sem alimento suficiente para atender quem precisa. Não existe hoje um jeito simples de avisar quem tem sobra para quem pode buscar — a comunicação depende de contato informal, o que faz o alimento vencer antes de chegar a alguém. O problema não é "falta um app de cadastro de doações": é que a informação sobre comida disponível não chega a tempo a quem poderia aproveitá-la, e o desperdício acontece justamente nessa janela entre "sobrou comida" e "alguém foi buscar".
+
 ## Incertezas
+
+- Não sabemos o volume real de doações que o piloto vai gerar por dia — não há nenhuma medição histórica, só a percepção de Marta.
+- Não sabemos se o gargalo real está no aviso (doador demora para publicar / ONG demora para ver) ou na coleta (ONG vê a tempo, mas não tem voluntário disponível para buscar). São problemas diferentes e pedem soluções diferentes.
+- Não sabemos quantos campos de cadastro um doador aceita preencher antes de desistir no meio do processo.
+- Não sabemos o nível mínimo de rastreabilidade que a vigilância sanitária vai de fato exigir para autorizar o piloto — o caso menciona a exigência, mas não o detalhe.
+- Não sabemos se a conexão instável dos voluntários entregadores (celular, na rua) vai inviabilizar alguma parte do fluxo pensado.
 
 ## Stakeholders
 | Stakeholder | Interesse | Influência | O que espera | Prioridade |
