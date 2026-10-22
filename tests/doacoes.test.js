@@ -35,7 +35,7 @@ describe('publicar e listar doações', () => {
     it('mostra a doação publicada na lista de disponíveis', async () => {
     await request(app)
       .post('/api/doacoes')
-      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-10-01' });
+      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-10-01', enderecoRetirada: 'Rua das Flores, 123' });
  
     const res = await request(app).get('/api/doacoes');
     console.log(res)
@@ -61,7 +61,7 @@ describe('aceitar uma doação', () => {
   it('marca a doação como aceita pela ONG', async () => {
     const criada = await request(app)
       .post('/api/doacoes')
-      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01' });
+      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01', enderecoRetirada: 'Rua das Flores, 123' });
  
     const res = await request(app)
       .post(`/api/doacoes/${criada.body.id}/aceitar`)
@@ -75,7 +75,7 @@ describe('aceitar uma doação', () => {
   it('remove a doação da lista de disponíveis depois de aceita', async () => {
     const criada = await request(app)
       .post('/api/doacoes')
-      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01' });
+      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01', enderecoRetirada: 'Rua das Flores, 123' });
  
     await request(app)
       .post(`/api/doacoes/${criada.body.id}/aceitar`)
@@ -88,7 +88,7 @@ describe('aceitar uma doação', () => {
   it('recusa aceitar uma doação que já foi aceita por outra ONG', async () => {
     const criada = await request(app)
       .post('/api/doacoes')
-      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01' });
+      .send({ tipo: 'Sopa', quantidade: '10 porções', validade: '2026-08-01', enderecoRetirada: 'Rua das Flores, 123' });
  
     await request(app)
       .post(`/api/doacoes/${criada.body.id}/aceitar`)
