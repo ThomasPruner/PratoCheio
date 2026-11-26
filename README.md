@@ -15,49 +15,51 @@ Conecta doadores de alimentos excedentes a ONGs, antes que a comida se perca.
 
 ## Como rodar
 
-Requisito: **Node.js 22.13 ou superior**. Mais nada — o banco da Unidade 1 é SQLite, embutido no próprio Node.
-
-> Esta é a **stack preferencial** da disciplina. Se o seu grupo optar por outra, registre o ADR de justificativa e garanta os mesmos compromissos: repositório público com CI verde, rota de saúde, testes por um comando, os três comandos documentados aqui no README e banco relacional migrado para PostgreSQL na Unidade 3.
+Requisitos: **Node.js 22.13 ou superior** e **Docker** — o PostgreSQL sobe em contêiner, com a versão fixada (ADR 0001).
 
 ```bash
-npm install       # só na primeira vez
-npm run db:migrar # cria o schema (arquivo dados.sqlite)
-npm start         # sobe em http://localhost:3000
-npm test          # roda os testes
-npm run dev       # sobe recarregando a cada alteração
+npm install            # só na primeira vez
+cp .env.example .env   # configuração local (o .env não vai para o Git)
+npm run db:subir       # sobe o PostgreSQL 16 (cria o banco de desenvolvimento e o de testes)
+npm run db:migrar      # cria o schema
+npm start              # sobe em http://localhost:3000
+npm test               # roda os testes (no banco de testes, nunca no de desenvolvimento)
+npm run dev            # sobe recarregando a cada alteração
 ```
 
-Os testes usam SQLite **em memória**, então não sujam o banco de desenvolvimento.
+Para subir **banco e aplicação** em contêiner, sem Node na máquina: `docker compose up --build` (http://localhost:3000). `docker compose down` para; `docker compose down -v` para e apaga os dados.
 
-> Ao rodar `npm test` o Node imprime `ExperimentalWarning: SQLite is an experimental feature`.
-> É esperado — o módulo embutido `node:sqlite` ainda é marcado como experimental. Não é erro e não reprova o CI.
+> O PostgreSQL fica na porta **5433** do host (muda com `DB_PORT` no `.env`), para não colidir com um PostgreSQL instalado na máquina.
+> Os bancos só são criados na primeira vez que o volume sobe; depois de mudar `docker/initdb/` ou as senhas, rode `docker compose down -v`.
 
-> **Atenção:** não deixe o repositório dentro de uma pasta sincronizada (OneDrive, Google Drive, Dropbox) nem em disco de rede. O SQLite precisa de trava de arquivo e nesses lugares falha com `disk I/O error`. Clone em uma pasta local comum, por exemplo `~/dev/`.
+**Sem Docker?** Qualquer PostgreSQL alcançável serve: aponte `DATABASE_URL` (desenvolvimento) e `TEST_DATABASE_URL` (testes) no `.env`. O código não tem banco padrão — sem `DATABASE_URL` ele não conecta.
 
-## O banco: SQLite agora, PostgreSQL depois
+## O banco: PostgreSQL
 
-| Unidade | Banco | O que precisa instalar |
+| Variável | Para quê | Valor local (docker compose) |
 |---|---|---|
-| 1 — Análise | **SQLite** (`node:sqlite`, embutido) | nada além do Node |
-| 2 — Projeto | SQLite | nada |
-| 3 — Construção | **PostgreSQL** (após refatorar) | um PostgreSQL acessível — o caminho é escolha do grupo |
+| `DATABASE_URL` | desenvolvimento / piloto | `postgres://pratocheio:pratocheio@localhost:5433/pratocheio` |
+| `TEST_DATABASE_URL` | testes automatizados | `postgres://pratocheio_test:pratocheio_test@localhost:5433/pratocheio_test` |
 
-A troca não é acidente de percurso: na Unidade 2 vocês registram a decisão em um **ADR** (alternativas, consequências, riscos) e na Unidade 3 executam a **refatoração** — com os testes existentes provando que o comportamento se manteve.
-
-O `src/db.js` foi desenhado para isso: ele expõe `query()` devolvendo `{ rows }`, então a troca do banco fica contida nele e não vaza para as regras de negócio.
-
-**Como o PostgreSQL vai subir é decisão do grupo**, comparada no mesmo ADR: instalar o PostgreSQL na máquina, subir um contêiner, ou usar um serviço gerenciado gratuito (Neon, Supabase, Render). A disciplina não impõe o caminho — exige o banco alcançável por `DATABASE_URL`, o schema migrado e o CI verde. Cada opção tem custo e risco diferentes, e reconhecê-los é parte da decisão.
+- O acesso é por `DATABASE_URL`, com o driver `pg` e um pool de conexões. O `src/db.js` expõe `query()` devolvendo `{ rows }`, e a troca de banco ficou contida nele e no SQL de `src/repositorio.js` (marcadores `$1, $2, …`); as regras de negócio (`src/doacoes.js`) não mudaram.
+- As datas continuam `TEXT` no formato `AAAA-MM-DD HH:MM:SS`, em UTC, como antes.
+- **Os testes nunca tocam o banco real** (ADR 0002): usam um banco separado, com usuário próprio, cujo nome precisa terminar em `_test`. O Vitest cancela a suíte antes do primeiro teste se não for assim, e `limparBanco()` só apaga com `NODE_ENV=test` num banco `_test`.
+- No CI (`.github/workflows/ci.yml`) os testes rodam sobre um serviço `postgres:16`, a mesma imagem do `docker-compose.yml`.
 
 ## Estrutura
 
 ```
 src/server.js        entrypoint (npm start)
-src/db.js            conexão e schema do banco (pronto)
+src/db.js            conexão (PostgreSQL) e schema do banco
 src/app.js           rotas da API
 src/doacoes.js       regras de negócio      <- implementar (U1)
 src/repositorio.js   acesso ao banco (SQL)  <- implementar (U1)
 public/index.html    interface (funciona no celular)
-tests/               testes automatizados
+tests/               testes automatizados (rodam no PostgreSQL de testes)
+docker-compose.yml   PostgreSQL 16 (+ aplicação) em contêiner
+Dockerfile           imagem da aplicação
+docker/initdb/       cria o banco e o usuário de testes na primeira subida
+.env.example         modelo das variáveis de ambiente
 docs/analise.md      documento de análise   (Trabalho 1)
 docs/projeto.md      documento de projeto   (Trabalho 2)
 docs/adr/            decisões arquiteturais (Trabalho 2)

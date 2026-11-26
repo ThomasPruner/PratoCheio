@@ -1,7 +1,3 @@
-// Camada de acesso ao banco de dados
-// Camada de acesso ao banco de dados
-import { query } from './db.js';
-
 // Insere uma nova doação
 export async function inserir({
   tipo,
@@ -20,7 +16,7 @@ export async function inserir({
       doador,
       endereco_retirada
     )
-    VALUES (?, ?, ?, ?, ?)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *
     `,
     [
@@ -43,7 +39,7 @@ export async function listarPorDoador(doador) {
     `
     SELECT *
     FROM doacoes
-    WHERE doador = ?
+    WHERE doador = $1
     ORDER BY criada_em DESC,
              id DESC
     `,
@@ -82,11 +78,13 @@ export async function listarDisponiveis() {
 // Busca uma doação pelo ID
 export async function buscarPorId(id) {
 
+  if (!idPossivel(id)) return undefined;
+
   const { rows } = await query(
     `
     SELECT *
     FROM doacoes
-    WHERE id = ?
+    WHERE id = $1
     `,
     [id]
   );
@@ -97,12 +95,14 @@ export async function buscarPorId(id) {
 // Doador cancela uma doação, se ainda estiver disponível
 export async function cancelar(id, doador) {
 
+  if (!idPossivel(id)) return undefined;
+
   const { rows } = await query(
     `
     UPDATE doacoes
     SET status = 'cancelada'
-    WHERE id = ?
-      AND doador = ?
+    WHERE id = $1
+      AND doador = $2
       AND status = 'disponivel'
     RETURNING *
     `,
@@ -115,17 +115,22 @@ export async function cancelar(id, doador) {
   return rows[0];
 }
 
-// Aceita uma doação
+// Aceita uma doação.
+// A condição `status = 'disponivel'` no próprio UPDATE é o que garante a reserva
+// exclusiva: com duas ONGs aceitando ao mesmo tempo, o PostgreSQL faz a segunda
+// esperar a primeira terminar, reavalia a condição e não atualiza nada.
 export async function aceitar(id, ong) {
+
+  if (!idPossivel(id)) return undefined;
 
   const { rows } = await query(
     `
     UPDATE doacoes
     SET
       status = 'aceita',
-      ong = ?,
-      aceita_em = datetime('now')
-    WHERE id = ?
+      ong = $1,
+      aceita_em = ${AGORA_UTC}
+    WHERE id = $2
       AND status = 'disponivel'
     RETURNING *
     `,
@@ -153,12 +158,14 @@ export async function listarPendentesColeta() {
 
 // A atualização condicional evita registrar a coleta duas vezes.
 export async function coletar(id, voluntario) {
+  if (!idPossivel(id)) return undefined;
+
   const { rows } = await query(`
     UPDATE doacoes
     SET status = 'coletada',
-        voluntario = ?,
-        coletada_em = datetime('now')
-    WHERE id = ? AND status = 'aceita'
+        voluntario = $1,
+        coletada_em = ${AGORA_UTC}
+    WHERE id = $2 AND status = 'aceita'
     RETURNING id, tipo, quantidade, validade, status, ong, doador,
               criada_em, aceita_em, voluntario, coletada_em
   `, [voluntario, id]);
@@ -167,11 +174,13 @@ export async function coletar(id, voluntario) {
 
 // Contagem pelo instante de aceite, não pelo status atual: doações já
 // coletadas continuam contando no mês em que foram aceitas.
+// COUNT(*) no PostgreSQL é bigint e o driver o devolve como string ("3");
+// o ::int mantém o número que o SQLite devolvia.
 export async function contarAceitasNoPeriodo(inicio, fim) {
   const { rows } = await query(`
-    SELECT COUNT(*) AS total
+    SELECT COUNT(*)::int AS total
     FROM doacoes
-    WHERE aceita_em >= ? AND aceita_em < ?
+    WHERE aceita_em >= $1 AND aceita_em < $2
       AND status IN ('aceita', 'coletada')
   `, [inicio, fim]);
   return rows[0].total;
